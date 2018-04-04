@@ -1,1 +1,1 @@
-"# slack-jira-bot" 
+# slack-jira-bot
