@@ -1,11 +1,12 @@
 const { RTMClient } = require('@slack/client');
 const request = require('request-promise-native');
+const config = require('./config.json');
 
 // An access token (from your Slack app or custom integration - usually xoxb)
-const slackToken = process.env.SLACK_TOKEN;
+const slackToken = config.slackToken;
 const jiraAuth = {
-  user: process.env.JIRA_USER,
-  pass: process.env.JIRA_PASS
+  user: config.jiraUser,
+  pass: config.jiraPass
 } 
 
 const rtm = new RTMClient(slackToken);
