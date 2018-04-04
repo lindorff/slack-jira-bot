@@ -1,0 +1,7 @@
+@echo off
+
+set SLACK_TOKEN=xoxb-replace-me
+set JIRA_USER=some_user
+set JIRA_PASS=some_pass
+
+node stalker.js

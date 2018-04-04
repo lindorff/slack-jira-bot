@@ -1,0 +1,16 @@
+{
+  "name": "jira-slackbot",
+  "version": "1.0.0",
+  "description": "Jira Slackbot for LIS alpha team",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "@slack/client": "^4.1.0",
+    "request": "^2.85.0",
+    "request-promise-native": "^1.0.5"
+  }
+}
