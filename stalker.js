@@ -8,6 +8,7 @@ const jiraAuth = {
   user: config.jiraUser,
   pass: config.jiraPass
 } 
+const project = config.project;
 
 const rtm = new RTMClient(slackToken);
 rtm.start();
@@ -19,7 +20,7 @@ rtm.on('message', (message) => {
     return;
   }
 
-  const jiraTicketIdRegEx = /GIIT-\d+/g;
+  const jiraTicketIdRegEx = new RegExp(project+'-\d+', 'g');
   const jiraTickets = message.text.match(jiraTicketIdRegEx);
 
   if(jiraTickets) {
