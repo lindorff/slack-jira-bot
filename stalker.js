@@ -20,7 +20,7 @@ rtm.on('message', (message) => {
     return;
   }
 
-  const jiraTicketIdRegEx = new RegExp(project+'-\d+', 'g');
+  const jiraTicketIdRegEx = new RegExp(project + '-\\d+', 'g');
   const jiraTickets = message.text.match(jiraTicketIdRegEx);
 
   if(jiraTickets) {
