@@ -1,0 +1,6 @@
+{
+    "slackToken": "xoxb-replace-me",
+    "jiraUser": "some_user",
+    "jiraPass": "some_pass",
+    "project": "SOMEPROJECT"
+}
