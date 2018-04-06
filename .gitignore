@@ -1,3 +1,8 @@
 node_modules/
 package-lock.json
 config.json
+jira_privatekey.pcks8
+jira_privatekey.pem
+jira_publickey.cer
+jira_publickey.pem
+.vscode/launch.json

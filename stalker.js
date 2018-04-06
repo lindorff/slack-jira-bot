@@ -1,13 +1,19 @@
 const { RTMClient } = require('@slack/client');
 const request = require('request-promise-native');
 const config = require('./config.json');
+const fs = require('fs');
 
 // An access token (from your Slack app or custom integration - usually xoxb)
 const slackToken = config.slackToken;
-const jiraAuth = {
-  user: config.jiraUser,
-  pass: config.jiraPass
-} 
+
+//OAuth parameter names found from here https://github.com/request/request#oauth-signing
+const jiraOAuth = {
+  consumer_key: config.jiraConsumerKey, 
+  private_key: fs.readFileSync(config.jiraPrivateKeyFile, 'utf8'), 
+  token: config.jiraToken, 
+  token_secret: config.jiraTokenSecret,
+  signature_method: 'RSA-SHA1'
+}
 const project = config.project;
 
 const rtm = new RTMClient(slackToken);
@@ -31,7 +37,7 @@ rtm.on('message', (message) => {
 const postJiraDataToSlack = channelId => async(jiraTicketId) => {
   try {
     const issueDetails = JSON.parse(
-      await request(`https://jira.lindorff.com/rest/api/2/issue/${jiraTicketId}`, { auth: jiraAuth })
+      await request(`https://jira.lindorff.com/rest/api/2/issue/${jiraTicketId}`, { oauth: jiraOAuth })
     );
 
     rtm.sendMessage(getJiraTicketInfoIntoString(issueDetails), channelId);

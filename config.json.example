@@ -1,6 +1,8 @@
 {
     "slackToken": "xoxb-replace-me",
-    "jiraUser": "some_user",
-    "jiraPass": "some_pass",
+    "jiraToken": "jira-oauth-token",
+    "jiraTokenSecret": "jira-token-secret",
+    "jiraConsumerKey": "jira-consumer-key",    
+    "jiraPrivateKeyFile": "./jira_privatekey.pem",
     "project": "SOMEPROJECT"
 }
