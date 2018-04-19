@@ -26,21 +26,31 @@ rtm.on('message', (message) => {
     return;
   }
 
+  if(!message.text) {
+    //Slack sends events with null text when using threads. Let's just ignore those.
+    return;
+  }
+
   const jiraTicketIdRegEx = new RegExp(project + '-\\d+', 'g');
   const jiraTickets = message.text.match(jiraTicketIdRegEx);
 
+  //Thread is formed based on timestamp. If we don't have thread already let's create one using original messages timestamp
+  const threadTs = message.thread_ts || message.ts;
+
   if(jiraTickets) {
-    jiraTickets.forEach(postJiraDataToSlack(message.channel));
+    jiraTickets.forEach(postJiraDataToSlack(message.channel, threadTs));
   }
 });
 
-const postJiraDataToSlack = channelId => async(jiraTicketId) => {
+const postJiraDataToSlack = (channelId, threadTs) => async(jiraTicketId) => {
   try {
     const issueDetails = JSON.parse(
       await request(`https://jira.lindorff.com/rest/api/2/issue/${jiraTicketId}`, { oauth: jiraOAuth })
     );
 
-    rtm.sendMessage(getJiraTicketInfoIntoString(issueDetails), channelId);
+    const text = getJiraTicketInfoIntoString(issueDetails);
+    
+    rtm.addOutgoingEvent(true, 'message', { text: text, channel: channelId, thread_ts: threadTs });
   } catch(err) {
     console.log(`Error fetching Jira issue ${jiraTicketId} : ` + err);
   }
