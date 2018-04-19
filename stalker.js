@@ -14,7 +14,7 @@ const jiraOAuth = {
   token_secret: config.jiraTokenSecret,
   signature_method: 'RSA-SHA1'
 }
-const project = config.project;
+const projects = config.projects;
 
 const rtm = new RTMClient(slackToken);
 rtm.start();
@@ -31,7 +31,7 @@ rtm.on('message', (message) => {
     return;
   }
 
-  const jiraTicketIdRegEx = new RegExp(project + '-\\d+', 'g');
+  const jiraTicketIdRegEx = new RegExp(regExpForProjects(projects) + '-\\d+', 'g');
   const jiraTickets = message.text.match(jiraTicketIdRegEx);
 
   //Thread is formed based on timestamp. If we don't have thread already let's create one using original messages timestamp
@@ -41,6 +41,18 @@ rtm.on('message', (message) => {
     jiraTickets.forEach(postJiraDataToSlack(message.channel, threadTs));
   }
 });
+
+function regExpForProjects(projects) {
+  if(!projects || projects.length == 0) {
+    throw new Error("No projects configured");
+  }
+  
+  const projectsRegExp = projects
+    .map(project => `(${project})`)
+    .join('|');  
+    
+  return `(${projectsRegExp})`;  
+}
 
 const postJiraDataToSlack = (channelId, threadTs) => async(jiraTicketId) => {
   try {
@@ -57,5 +69,9 @@ const postJiraDataToSlack = (channelId, threadTs) => async(jiraTicketId) => {
 }
 
 function getJiraTicketInfoIntoString(issue) {
-  return issue.key + " " + issue.fields.summary + " status: " + issue.fields.status.name;
+  return `${issue.key} ${issue.fields.summary} status: ${issue.fields.status.name}`;
+}
+
+module.exports = {
+  regExpForProjects: regExpForProjects
 }
