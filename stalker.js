@@ -69,7 +69,7 @@ const postJiraDataToSlack = (channelId, threadTs) => async(jiraTicketId) => {
 }
 
 function getJiraTicketInfoIntoString(issue) {
-  return `${issue.key} ${issue.fields.summary} status: ${issue.fields.status.name}`;
+  return `${issue.key} ${issue.fields.summary} \n*Status*: ${issue.fields.status.name}`;
 }
 
 module.exports = {
