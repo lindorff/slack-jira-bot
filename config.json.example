@@ -4,5 +4,5 @@
     "jiraTokenSecret": "jira-token-secret",
     "jiraConsumerKey": "jira-consumer-key",    
     "jiraPrivateKeyFile": "./jira_privatekey.pem",
-    "project": "SOMEPROJECT"
+    "projects": ["SOMEPROJECT", "OTHERPROJECT"]
 }
