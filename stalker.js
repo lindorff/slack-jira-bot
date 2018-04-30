@@ -1,4 +1,5 @@
 const { RTMClient } = require('@slack/client');
+const { WebClient } = require('@slack/client');
 const request = require('request-promise-native');
 const config = require('./config.json');
 const fs = require('fs');
@@ -17,16 +18,17 @@ const jiraOAuth = {
 const projects = config.projects;
 
 const rtm = new RTMClient(slackToken);
+const web = new WebClient(slackToken);
 rtm.start();
 console.log('Starting bot');
 
-rtm.on('message', (message) => {
+rtm.on('message', (message) => {  
   // Skip messages that are from a bot. We don't want this bot to react to messages from other bots.
   if ( (message.subtype && message.subtype === 'bot_message') ) {
     return;
   }
 
-  if(!message.text) {
+  if(message.hidden) {
     //Slack sends events with null text when using threads. Let's just ignore those.
     return;
   }
@@ -62,14 +64,14 @@ const postJiraDataToSlack = (channelId, threadTs) => async(jiraTicketId) => {
 
     const text = getJiraTicketInfoIntoString(issueDetails);
     
-    rtm.addOutgoingEvent(true, 'message', { text: text, channel: channelId, thread_ts: threadTs });
+    web.chat.postMessage({ text: text, channel: channelId, thread_ts: threadTs});
   } catch(err) {
     console.log(`Error fetching Jira issue ${jiraTicketId} : ` + err);
   }
 }
 
 function getJiraTicketInfoIntoString(issue) {
-  return `${issue.key} ${issue.fields.summary} \n*Status*: ${issue.fields.status.name}`;
+  return `<https://jira.lindorff.com/browse/${issue.key}|${issue.key}> ${issue.fields.summary} \n*Status*: ${issue.fields.status.name} `;
 }
 
 module.exports = {
