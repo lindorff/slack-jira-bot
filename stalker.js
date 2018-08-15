@@ -40,7 +40,8 @@ rtm.on('message', (message) => {
   const threadTs = message.thread_ts || message.ts;
 
   if(jiraTickets) {
-    jiraTickets.forEach(postJiraDataToSlack(message.channel, threadTs));
+    const uniqueTickets = new Set(jiraTickets);
+    uniqueTickets.forEach(postJiraDataToSlack(message.channel, threadTs));
   }
 });
 
