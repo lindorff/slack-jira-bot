@@ -7,8 +7,13 @@
     "start": "node stalker.js",
     "test": "mocha"
   },
-  "author": "",
-  "license": "",
+  "author": "Olli Sorje <olli.sorje@lindorff.com>",
+  "licenses": [
+    {
+        "type": "Apache-2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
   "dependencies": {
     "@slack/client": "^4.1.0",
     "chai": "^4.1.2",

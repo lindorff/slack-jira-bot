@@ -1,6 +1,15 @@
 # slack-jira-bot
 
-First call `npm install`, and then you can run the bot by calling `npm start`
+Slack-jira-bot is a simple Slack bot that listens to all Slack channels it's invited to. When it notices a JIRA ticket id in the channel, it fetches information about that ticket from JIRA and sends that info to a thread where it noticed the ticket id.
+
+## Running
+
+```
+$ npm install
+$ npm start
+```
+
+Of course, that won't get much done for you, so read on how to connect your bot to Slack and JIRA.
 
 ## Configuring Slack 
 
@@ -16,3 +25,13 @@ In config file you have to configure four things. You find most of the values fr
 * **jiraTokenSecret**: secret in _config.properties_
 * **jiraConsumerKey**: consumer_key in _config.properties_
 * **jiraPrivateKeyFile**: Path to file containing private key in PEM format. If you followed instructions this should be in file called *jira_privatekey.pem*
+
+## Running with Docker
+
+After you have configured your bot, you can use also Docker to run it. Just build your image and run it e.g.
+```
+$ docker build -t slack-jira-bot .
+$ docker run slack-jira-bot
+```
+
+Note that your JIRA private key file should be somewhere inside your project directory in order to access that inside Docker process.
