@@ -32,6 +32,7 @@ const jiraOAuth = {
   signature_method: 'RSA-SHA1'
 }
 const projects = config.projects;
+const jiraBaseAddress = config.jiraBaseAddress;
 
 const rtm = new RTMClient(slackToken);
 const web = new WebClient(slackToken);
@@ -76,7 +77,7 @@ function regExpForProjects(projects) {
 const postJiraDataToSlack = (channelId, threadTs) => async(jiraTicketId) => {
   try {
     const issueDetails = JSON.parse(
-      await request(`https://jira.lindorff.com/rest/api/2/issue/${jiraTicketId}`, { oauth: jiraOAuth })
+      await request(`${jiraBaseAddress}/rest/api/2/issue/${jiraTicketId}`, { oauth: jiraOAuth })
     );
 
     const text = getJiraTicketInfoIntoString(issueDetails);
@@ -88,7 +89,7 @@ const postJiraDataToSlack = (channelId, threadTs) => async(jiraTicketId) => {
 }
 
 function getJiraTicketInfoIntoString(issue) {
-  return `<https://jira.lindorff.com/browse/${issue.key}|${issue.key}> ${issue.fields.summary} \n*Status*: ${issue.fields.status.name} `;
+  return `<${jiraBaseAddress}/browse/${issue.key}|${issue.key}> ${issue.fields.summary} \n*Status*: ${issue.fields.status.name} `;
 }
 
 module.exports = {
