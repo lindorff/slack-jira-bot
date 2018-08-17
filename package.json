@@ -1,7 +1,7 @@
 {
   "name": "jira-slackbot",
   "version": "1.0.0",
-  "description": "Jira Slackbot for LIS alpha team",
+  "description": "Slackbot for fetching Jira issues mentioned in channel",
   "main": "index.js",
   "scripts": {
     "start": "node stalker.js",
