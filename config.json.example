@@ -4,5 +4,6 @@
     "jiraTokenSecret": "jira-token-secret",
     "jiraConsumerKey": "jira-consumer-key",    
     "jiraPrivateKeyFile": "./jira_privatekey.pem",
+    "jiraBaseAddress": "https://jira.your-company.com",
     "projects": ["SOMEPROJECT", "OTHERPROJECT"]
 }
