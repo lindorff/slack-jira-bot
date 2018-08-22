@@ -20,7 +20,6 @@ function regExpForProjects(projects) {
     }
     
     const projectsRegExp = projects
-    
       .map(project => `(${project})`)
       .join('|');  
       
