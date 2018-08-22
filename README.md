@@ -1,5 +1,7 @@
 # slack-jira-bot
 
+[![Build Status](https://travis-ci.org/lindorff/slack-jira-bot.svg?branch=master)](https://travis-ci.org/lindorff/slack-jira-bot)
+
 Slack-jira-bot is a simple Slack bot that listens to all Slack channels it's invited to. When it notices a JIRA ticket id in the channel, it fetches information about that ticket from JIRA and sends that info to a thread where it noticed the ticket id.
 
 ## Running

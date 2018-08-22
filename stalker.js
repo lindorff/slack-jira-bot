@@ -19,6 +19,7 @@ const { WebClient } = require('@slack/client');
 const request = require('request-promise-native');
 const config = require('./config.json');
 const fs = require('fs');
+const utils = require('./utils.js');
 
 // An access token (from your Slack app or custom integration - usually xoxb)
 const slackToken = config.slackToken;
@@ -50,7 +51,7 @@ rtm.on('message', (message) => {
     return;
   }
 
-  const jiraTicketIdRegEx = new RegExp(regExpForProjects(projects) + '-\\d+', 'g');
+  const jiraTicketIdRegEx = new RegExp(utils.regExpForProjects(projects) + '-\\d+', 'g');
   const jiraTickets = message.text.match(jiraTicketIdRegEx);
 
   //Thread is formed based on timestamp. If we don't have thread already let's create one using original messages timestamp
@@ -61,18 +62,6 @@ rtm.on('message', (message) => {
     uniqueTickets.forEach(postJiraDataToSlack(message.channel, threadTs));
   }
 });
-
-function regExpForProjects(projects) {
-  if(!projects || projects.length == 0) {
-    throw new Error("No projects configured");
-  }
-  
-  const projectsRegExp = projects
-    .map(project => `(${project})`)
-    .join('|');  
-    
-  return `(${projectsRegExp})`;  
-}
 
 const postJiraDataToSlack = (channelId, threadTs) => async(jiraTicketId) => {
   try {
@@ -90,8 +79,4 @@ const postJiraDataToSlack = (channelId, threadTs) => async(jiraTicketId) => {
 
 function getJiraTicketInfoIntoString(issue) {
   return `<${jiraBaseAddress}/browse/${issue.key}|${issue.key}> ${issue.fields.summary} \n*Status*: ${issue.fields.status.name} `;
-}
-
-module.exports = {
-  regExpForProjects: regExpForProjects
 }
